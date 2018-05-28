@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="icon" href="/asset/img/favicon.ico" />
+    <link rel="stylesheet" href="/asset/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/asset/bootstrap/dist/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="/asset/bootstrap/dist/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="/asset/md.css">
+<!--
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+-->
+    <link rel="stylesheet" href="/asset/app.css">
+    <title>SCHOOL MANAGEMENT</title>
+</head>
+<body style="width: 100%">
+
+
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2 id="title" class="h2 text-center label label-primary" style="background: linear-gradient(to top,#4caf50,#a1e4ff);color:white;border: solid white 2px;border-radius: 50%;height: 60px ;padding-top:10px;text-align: center;width: 50%;margin: 5px  auto">SCHOOL MANAGEMENT</h2>
+
+            <div id="alert" >
+
+            </div>
+
+            <button class="btn btn-success" data-toggle="modal" data-target="#addEtut"><i class="fa fa-plus"> Student</i></button>
+            <button class="btn btn-success" data-toggle="modal" data-target="#addNote" onclick="showAddNote(this)">  <i class="fa fa-plus"> Note </i></button>
+           <div class="form-group col-sm-3 " style="position: relative">
+               <input class="form-control pull-right" type="text"placeholder="Rechercher" id="search"  />
+               <i class="fa fa-search" style="position: absolute;font-size: 20px;top: 5px;right: 14px;height: 79%;" ></i>
+
+           </div>
+            <hr>
+        </div>
+
+        <div class="panel-body">
+            <table class="table table-bordered table-hover" id="tabEtu">
+                <thead style="background: #4caf50 ; color: white !important;">
+                <tr >
+                    <th style="color: white">Matricule</th>
+                    <th style="color: white">Last Name</th>
+                    <th style="color: white">First Name</th>
+                    <th style="color: white">Class</th>
+                    <th style="text-align: center;color: white">Action</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <% for(ligne of etudiants){%>
+                <tr>
+                    <td id="matetu<%=ligne.id%>" > <%= ligne.mat%></td>
+                    <td id="nometu<%=ligne.id%>" > <%= ligne.nom%></td>
+                    <td id="prenometu<%=ligne.id%>" > <%= ligne.prenom%></td>
+                    <td id="classetu<%=ligne.id%>" > <%= ligne.class%></td>
+                    <td style="text-align: center">
+                        <button class="btn btn-success" value="<%=ligne.id%>"
+                                onclick="showNoteEut(this)"
+                                data-toggle="modal" data-target="#showNote">
+                            <i class="fa fa-eye"> Note</i>
+                        </button>
+                        <button class="btn btn-primary" value="<%=ligne.id%>"
+                                onclick="showediteEtu(this)"
+                                data-toggle="modal" data-target="#editEtut">
+                            <i class="fa fa-edit"> Edit</i>
+                        </button>
+                        <button class="btn btn-warning" value="<%=ligne.id%>" onclick="DelEtu(this)">
+                            <i class="fa fa-trash"> Del</i>
+                        </button>
+
+                    </td>
+                </tr>
+
+                <%}%>
+                <?php endwhile;?>
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- EDIT ETUD-->
+<div class="modal fade" id="editEtut" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <h4 class="modal-title text-center">Edite Etudiant</h4>
+
+            <div class="modal-body">
+                <form id="frmEditEtu">
+                    <div class="form-group">
+                        <label for="matEtEdit" class="control-label">Matricule:</label>
+                        <input type="text" class="form-control" id="matEtEdit" required pattern="^MAT([0-9]{1,3})$">
+                        <input type="hidden" class="form-control" id="idEtEdit" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomEtEdit" class="control-label">Nom:</label>
+                        <input type="text" class="form-control" id="nomEtEdit" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prenomEtEdit" class="control-label">Prenom:</label>
+                        <input type="text" class="form-control" id="prenomEtEdit" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="classEtEdit" class="control-label" required>Classe:</label>
+                        <input type="text" class="form-control" id="classEtEdit">
+                    </div>
+                    <div class="text-center" style="margin-bottom: 25px">
+                        <button type="submit" class="btn btn-primary" >Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- ADD ETUD-->
+<div class="modal fade" id="addEtut" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <h4 class="modal-title text-center">Ajout Etudiant</h4>
+            <div class="modal-body">
+                <form id="formAddEtud">
+                    <div class="form-group">
+                        <label for="matEtAdd" class="control-label">Matricule:</label>
+                        <input type="text" class="form-control" id="matEtAdd" required="required" pattern="^MAT([0-9]{3})$" readonly="readonly">
+                    </div>
+                    <div class="form-group">
+                        <label for="nomEtAdd" class="control-label">Nom:</label>
+                        <input type="text" class="form-control" id="nomEtAdd" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="prenomEtAdd" class="control-label">Prenom:</label>
+                        <input type="text" class="form-control" id="prenomEtAdd" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="classEtAdd" class="control-label">Classe:</label>
+                        <input type="text" class="form-control" id="classEtAdd" required="required">
+                    </div>
+                    <div class="text-center" style="margin-bottom: 25px">
+                        <button type="submit" class="btn btn-primary" id="btnAddEtu">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- ADD Note-->
+<div class="modal fade" id="addNote" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="height: auto !important;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <h4 class="modal-title text-center">Ajout Note</h4>
+            <div class="modal-body" style="max-height: 500px; overflow: auto">
+                <form id="frmAddNote">
+                    <div class="form-group">
+                        <label for="valNote" class="control-label">Valeur:</label>
+                        <input type="number"  step=0.01 class="form-control" min="0" max="20" id="valNote" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="anneNote" class="control-label">Annee:</label>
+                        <input type="text" class="form-control" id="anneNote" required pattern="^([0-9]){4}$">
+                    </div>
+                    <div class="form-group">
+                        <label for="semNote" class="control-label">Semestre:</label>
+                        <input type="number" class="form-control" id="semNote" min="1" max="2" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="matierNote" class="control-label">Matiere:</label>
+                        <input type="text" class="form-control" id="matierNote" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="matierNote" class="control-label">Etudiant</label>
+                        <select class="form-control" id="idEtudiant" required="required">
+
+                        </select>
+                    </div>
+
+                    <div class="text-center" style="margin-bottom: 25px">
+                        <button type="submit" class="btn btn-primary" id="submitNote">Enregistrer</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- SHOW Note-->
+<div class="modal fade" id="showNote" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="height: auto !important;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <h4 class="modal-title text-center">Tableau de notes</h4>
+            <label style="font-size: 11px;color: blue;text-align: center">Double click pour editer - Entrer pour enregistrer</label>
+            <div class="modal-body">
+                <table class="table table-hover table-bordered" id="TabNote">
+                    <thead>
+                    <tr>
+                        <td>Valeur</td>
+                        <td>Matiere</td>
+                        <td>Semestre</td>
+                        <td>Année</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="/asset/jquery/dist/jquery.js"></script>
+<script src="/asset/poper.js"></script>
+<script src="/asset/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/asset/bootstrap/dist/js/bootstrap.bundle.js"></script>
+<!--
+<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+-->
+<script src="/asset/md.js"></script>
+<script src="/asset/app.js"></script>
+</body>
+</html>

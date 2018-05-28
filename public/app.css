@@ -1,0 +1,21 @@
+.inputHide{
+    width: 100px;
+}
+
+body{
+ background: linear-gradient(to bottom, #d7e9ec, #a2ffc3, #fff9f6);
+}
+
+#alert{
+    display: none;
+}
+.modal-content{
+    background: linear-gradient(to bottom, #3aece4, #1cffe4, #6fffec) !important;
+}
+
+#title:hover{
+    transition: 700ms;
+    box-shadow: 1px 1px 10px 10px white;
+    cursor: pointer;
+    text-shadow:3px 1px 5px 5px white; ;
+}
